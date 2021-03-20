@@ -1,4 +1,4 @@
-# petStore
+# PetStore
 
 A new Flutter project.
 
