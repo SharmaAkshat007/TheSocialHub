@@ -9,7 +9,10 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   final _formkey = GlobalKey<FormState>();
 
-  LoginUser user = new LoginUser(email: '', password: '');
+  final LoginUser user = new LoginUser(email: '', password: '');
+
+  final emailId = TextEditingController();
+  final password = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +41,7 @@ class _LoginState extends State<Login> {
                     Padding(
                       padding: EdgeInsets.only(left: 15, right: 15),
                       child: TextFormField(
+                        controller: emailId,
                         cursorColor: Colors.purple,
                         autofocus: true,
                         onChanged: (val) {
@@ -45,7 +49,7 @@ class _LoginState extends State<Login> {
                         },
                         validator: (value) {
                           if (value.isEmpty) {
-                            return 'Please enter username or email id';
+                            return 'Please enter your email id';
                           }
                           return null;
                         },
@@ -53,12 +57,12 @@ class _LoginState extends State<Login> {
                           fontSize: 20,
                         ),
                         decoration: InputDecoration(
-                          labelText: 'Username or Email ID',
+                          labelText: 'Email ID',
                           labelStyle: TextStyle(
                             color: Colors.black,
                             fontSize: 18,
                           ),
-                          errorStyle: TextStyle(fontSize: 15),
+                          errorStyle: TextStyle(fontSize: 13),
                           enabledBorder: UnderlineInputBorder(
                             borderSide: BorderSide(color: Colors.purple),
                           ),
@@ -74,6 +78,8 @@ class _LoginState extends State<Login> {
                     Padding(
                       padding: EdgeInsets.only(left: 15, right: 15),
                       child: TextFormField(
+                        controller: password,
+                        obscureText: true,
                         cursorColor: Colors.purple,
                         onChanged: (val) {
                           user.password = val;
@@ -91,7 +97,7 @@ class _LoginState extends State<Login> {
                             color: Colors.black,
                             fontSize: 18,
                           ),
-                          errorStyle: TextStyle(fontSize: 15),
+                          errorStyle: TextStyle(fontSize: 13),
                           enabledBorder: UnderlineInputBorder(
                             borderSide: BorderSide(color: Colors.purple),
                           ),
@@ -112,6 +118,8 @@ class _LoginState extends State<Login> {
                   if (_formkey.currentState.validate()) {
                     print(user.email);
                     print(user.password);
+                    emailId.clear();
+                    password.clear();
                   }
                 },
                 child: Text(
@@ -133,7 +141,7 @@ class _LoginState extends State<Login> {
                   SizedBox(width: 6),
                   FlatButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, '/signup');
+                      Navigator.popAndPushNamed(context, '/signup');
                     },
                     child: Text(
                       'Sign Up!',
@@ -144,13 +152,6 @@ class _LoginState extends State<Login> {
                   ),
                 ],
               ),
-              // FlatButton(
-              //   onPressed: () {},
-              //   child: Text('Forgot Password',
-              //       style:
-              //           TextStyle(fontSize: 16, fontWeight: FontWeight.normal)),
-              //   splashColor: Colors.purple[200],
-              // ),
             ],
           ),
         ),
