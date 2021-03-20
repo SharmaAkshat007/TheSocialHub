@@ -16,6 +16,7 @@ class MyApp extends StatelessWidget {
         '/': (context) => Login(),
         '/signup': (context) => SignUp(),
       },
+      debugShowCheckedModeBanner: false,
     );
   }
 }
