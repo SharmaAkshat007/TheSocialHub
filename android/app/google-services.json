@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "556805624020",
+    "project_id": "petstore-78862",
+    "storage_bucket": "petstore-78862.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:556805624020:android:67d02ac96b23ec1bbdeb41",
+        "android_client_info": {
+          "package_name": "com.akshatsharma.petstore"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "556805624020-nmk441m58gdul07n8rl8vnbbrbni06q6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBLfIQhqqWGr1a5FBFyuuNxWwVGzuOavl0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "556805624020-nmk441m58gdul07n8rl8vnbbrbni06q6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:556805624020:android:d38524c1c007494cbdeb41",
+        "android_client_info": {
+          "package_name": "com.example.petStore"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "556805624020-nmk441m58gdul07n8rl8vnbbrbni06q6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBLfIQhqqWGr1a5FBFyuuNxWwVGzuOavl0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "556805624020-nmk441m58gdul07n8rl8vnbbrbni06q6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
