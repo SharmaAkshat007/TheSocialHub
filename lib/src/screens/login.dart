@@ -14,6 +14,8 @@ class _LoginState extends State<Login> {
   final emailId = TextEditingController();
   final password = TextEditingController();
 
+  bool _showValue = false;
+
   @override
   void dispose() {
     emailId.dispose();
@@ -51,7 +53,6 @@ class _LoginState extends State<Login> {
                         child: TextFormField(
                           controller: emailId,
                           cursorColor: Colors.purple,
-                          autofocus: true,
                           onChanged: (val) {
                             user.email = val;
                           },
@@ -87,7 +88,7 @@ class _LoginState extends State<Login> {
                         padding: EdgeInsets.only(left: 15, right: 15),
                         child: TextFormField(
                           controller: password,
-                          obscureText: true,
+                          obscureText: !_showValue,
                           cursorColor: Colors.purple,
                           onChanged: (val) {
                             user.password = val;
@@ -117,6 +118,28 @@ class _LoginState extends State<Login> {
                       ),
                     ],
                   ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  children: [
+                    Checkbox(
+                      value: _showValue,
+                      activeColor: Colors.purple,
+                      onChanged: (bool value) {
+                        setState(() {
+                          _showValue = value;
+                        });
+                      },
+                    ),
+                    Text(
+                      'Show Password',
+                      style: TextStyle(
+                        fontSize: 15,
+                      ),
+                    )
+                  ],
                 ),
                 SizedBox(
                   height: 40,

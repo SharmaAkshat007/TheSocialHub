@@ -12,6 +12,8 @@ class _SignUpState extends State<SignUp> {
   final SignUpUser user =
       new SignUpUser(email: '', password: '', confirmPassword: '');
 
+  bool _showValue = false;
+
   final emailId = TextEditingController();
   final password = TextEditingController();
   final confirmpassword = TextEditingController();
@@ -27,7 +29,7 @@ class _SignUpState extends State<SignUp> {
   @override
   Widget build(BuildContext context) {
     return (Scaffold(
-      // backgroundColor: Colors.blue,
+      //backgroundColor: Colors.purple[100],
       body: SafeArea(
         child: SingleChildScrollView(
           child: Container(
@@ -54,7 +56,6 @@ class _SignUpState extends State<SignUp> {
                         child: TextFormField(
                           controller: emailId,
                           cursorColor: Colors.purple,
-                          autofocus: true,
                           onChanged: (val) {
                             user.email = val;
                           },
@@ -90,7 +91,7 @@ class _SignUpState extends State<SignUp> {
                         padding: EdgeInsets.only(left: 15, right: 15),
                         child: TextFormField(
                           controller: password,
-                          obscureText: true,
+                          obscureText: !_showValue,
                           cursorColor: Colors.purple,
                           onChanged: (val) {
                             user.password = val;
@@ -128,7 +129,7 @@ class _SignUpState extends State<SignUp> {
                           onChanged: (val) {
                             user.confirmPassword = val;
                           },
-                          obscureText: true,
+                          obscureText: !_showValue,
                           controller: confirmpassword,
                           validator: (value) {
                             if (value.isEmpty) {
@@ -158,6 +159,28 @@ class _SignUpState extends State<SignUp> {
                       ),
                     ],
                   ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  children: [
+                    Checkbox(
+                      value: _showValue,
+                      activeColor: Colors.purple,
+                      onChanged: (bool value) {
+                        setState(() {
+                          _showValue = value;
+                        });
+                      },
+                    ),
+                    Text(
+                      'Show Password',
+                      style: TextStyle(
+                        fontSize: 15,
+                      ),
+                    )
+                  ],
                 ),
                 SizedBox(
                   height: 40,
