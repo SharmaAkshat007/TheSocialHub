@@ -1,3 +1,5 @@
+//import 'dart:js';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:petStore/services/authService.dart';
@@ -19,12 +21,39 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Pet Store',
         initialRoute: '/',
-        routes: {
-          '/': (context) => Wrapper(),
-          '/login': (context) => Login(),
-          '/signup': (context) => SignUp(),
-          '/home': (context) => Home(),
+        onGenerateRoute: (settings) {
+          switch (settings.name) {
+            case '/':
+              return MaterialPageRoute(
+                builder: (context) => Wrapper(),
+              );
+              break;
+            case '/login':
+              return MaterialPageRoute(
+                builder: (context) => Login(),
+              );
+              break;
+            case '/signup':
+              return MaterialPageRoute(
+                builder: (context) => SignUp(),
+              );
+              break;
+            case '/home':
+              return MaterialPageRoute(
+                builder: (context) => Home(),
+              );
+              break;
+            default:
+              return null;
+          }
         },
+
+        // routes: {
+        //   '/': (context) => Wrapper(),
+        //   '/login': (context) => Login(),
+        //   '/signup': (context) => SignUp(),
+        //   '/home': (context) => Home(),
+        // },
         debugShowCheckedModeBanner: false,
       ),
     );

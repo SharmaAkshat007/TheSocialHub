@@ -15,9 +15,19 @@ class _LoginState extends State<Login> {
   final emailId = TextEditingController();
   final password = TextEditingController();
 
-  String error = 'Cannot login with these credentials!';
+  String error;
 
-  bool _showValue = false;
+  bool _showValue;
+
+  bool _showError;
+
+  @override
+  void initState() {
+    super.initState();
+    error = "Incorrect Email and Password!";
+    _showError = false;
+    _showValue = false;
+  }
 
   @override
   void dispose() {
@@ -28,24 +38,7 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
-    AlertDialog alert = AlertDialog(
-      title: Text('Error'),
-      content: Text(error),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
-      actions: [
-        FlatButton(
-          color: Colors.purple,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          child: Text('OK'),
-        ),
-      ],
-    );
     return (Scaffold(
-      // backgroundColor: Colors.purple[100],
       body: SafeArea(
         child: SingleChildScrollView(
           child: Container(
@@ -60,8 +53,32 @@ class _LoginState extends State<Login> {
                     fontSize: 35,
                   ),
                 ),
+                SizedBox(height: 20),
+                _showError == true
+                    ? Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          IconButton(
+                            iconSize: 22,
+                            splashColor: Colors.red[200],
+                            color: Colors.red,
+                            onPressed: () {
+                              setState(() {
+                                _showError = false;
+                              });
+                            },
+                            icon: Icon(Icons.cancel_sharp),
+                          ),
+                          Text(
+                            error,
+                            style: TextStyle(color: Colors.red, fontSize: 15),
+                          ),
+                        ],
+                      )
+                    : Text(''),
                 SizedBox(
-                  height: 40,
+                  height: 20,
                 ),
                 Form(
                   key: _formkey,
@@ -205,15 +222,13 @@ class _LoginState extends State<Login> {
                       dynamic resultUser = await Auth()
                           .signInWithEmailAndPassword(
                               user.email, user.password);
+
                       if (resultUser == null) {
-                        print(error);
-                        showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return alert;
-                            });
+                        setState(() {
+                          _showError = true;
+                        });
                       } else {
-                        Navigator.popAndPushNamed(context, '/home');
+                        Navigator.pushReplacementNamed(context, '/home');
                       }
 
                       emailId.clear();
@@ -244,7 +259,7 @@ class _LoginState extends State<Login> {
                     SizedBox(width: 6),
                     FlatButton(
                       onPressed: () {
-                        Navigator.popAndPushNamed(context, '/signup');
+                        Navigator.pushReplacementNamed(context, '/signup');
                       },
                       child: Text(
                         'Sign Up!',

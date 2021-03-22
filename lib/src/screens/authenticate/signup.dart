@@ -13,13 +13,23 @@ class _SignUpState extends State<SignUp> {
   final SignUpUser user =
       new SignUpUser(email: '', password: '', confirmPassword: '');
 
-  bool _showValue = false;
+  bool _showValue;
+
+  bool _showError;
 
   final emailId = TextEditingController();
   final password = TextEditingController();
   final confirmpassword = TextEditingController();
 
-  String error = 'Cannot login with these credentials!';
+  @override
+  void initState() {
+    super.initState();
+    error = "Email already exists or password too weak!";
+    _showError = false;
+    _showValue = false;
+  }
+
+  String error;
   @override
   void dispose() {
     emailId.dispose();
@@ -30,24 +40,7 @@ class _SignUpState extends State<SignUp> {
 
   @override
   Widget build(BuildContext context) {
-    AlertDialog alert = AlertDialog(
-      title: Text('Error'),
-      content: Text(error),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
-      actions: [
-        FlatButton(
-          color: Colors.purple,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          child: Text('OK'),
-        ),
-      ],
-    );
     return (Scaffold(
-      //backgroundColor: Colors.purple[100],
       body: SafeArea(
         child: SingleChildScrollView(
           child: Container(
@@ -62,9 +55,31 @@ class _SignUpState extends State<SignUp> {
                     fontSize: 35,
                   ),
                 ),
-                SizedBox(
-                  height: 40,
-                ),
+                SizedBox(height: 20),
+                _showError == true
+                    ? Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          IconButton(
+                            iconSize: 22,
+                            splashColor: Colors.red[200],
+                            color: Colors.red,
+                            onPressed: () {
+                              setState(() {
+                                _showError = false;
+                              });
+                            },
+                            icon: Icon(Icons.cancel_sharp),
+                          ),
+                          Text(
+                            error,
+                            style: TextStyle(color: Colors.red, fontSize: 15),
+                          ),
+                        ],
+                      )
+                    : Text(''),
+                SizedBox(height: 20),
                 Form(
                   key: _form,
                   child: Column(
@@ -257,14 +272,11 @@ class _SignUpState extends State<SignUp> {
                               user.email, user.password);
 
                       if (resultUser == null) {
-                        print(error);
-                        showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return alert;
-                            });
+                        setState(() {
+                          _showError = true;
+                        });
                       } else {
-                        Navigator.popAndPushNamed(context, '/login');
+                        Navigator.pushReplacementNamed(context, '/login');
                       }
                       emailId.clear();
                       password.clear();
@@ -295,7 +307,7 @@ class _SignUpState extends State<SignUp> {
                     SizedBox(width: 6),
                     FlatButton(
                       onPressed: () {
-                        Navigator.popAndPushNamed(context, '/login');
+                        Navigator.pushReplacementNamed(context, '/login');
                       },
                       child: Text(
                         'Login!',
