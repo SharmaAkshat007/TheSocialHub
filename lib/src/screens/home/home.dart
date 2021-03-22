@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:petStore/services/authService.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:petStore/src/widgets/loading.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -17,11 +17,7 @@ class _HomeState extends State<Home> {
           future: FirebaseAuth.instance.currentUser(),
           builder: (BuildContext context, AsyncSnapshot user) {
             if (user.connectionState == ConnectionState.waiting) {
-              return Container(
-                  child: SpinKitRing(
-                      color: Colors.purple,
-                      lineWidth: 3,
-                      duration: Duration(milliseconds: 1200)));
+              return Loading();
             } else {
               return Center(
                 child: Column(
@@ -39,7 +35,8 @@ class _HomeState extends State<Home> {
                         color: Colors.purple,
                         child: Text('Log Out'),
                         onPressed: () async {
-                          await Auth().signOut();
+                          Auth().signOut();
+
                           Navigator.pushReplacementNamed(context, '/login');
                         }),
                   ],

@@ -48,12 +48,7 @@ class MyApp extends StatelessWidget {
           }
         },
 
-        // routes: {
-        //   '/': (context) => Wrapper(),
-        //   '/login': (context) => Login(),
-        //   '/signup': (context) => SignUp(),
-        //   '/home': (context) => Home(),
-        // },
+        
         debugShowCheckedModeBanner: false,
       ),
     );
