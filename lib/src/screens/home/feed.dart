@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:petStore/src/widgets/post.dart';
-import '../../widgets/customShape.dart';
 
 class Feed extends StatefulWidget {
   @override
@@ -10,18 +9,34 @@ class Feed extends StatefulWidget {
 class _FeedState extends State<Feed> {
   @override
   Widget build(BuildContext context) {
-    double deviceWidth = MediaQuery.of(context).size.width;
-    double deviceHeight = MediaQuery.of(context).size.height;
     return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          "The Social Hub",
+          style: TextStyle(
+              color: Colors.purple, fontSize: 23, fontWeight: FontWeight.w600),
+        ),
+        elevation: 5,
+        backgroundColor: Colors.white,
+        toolbarHeight: 60,
+        actions: [
+          IconButton(
+            color: Colors.purple,
+            icon: Icon(Icons.send),
+            onPressed: () {},
+          ),
+        ],
+      ),
       body: SingleChildScrollView(
-        child: Stack(
-          alignment: Alignment.bottomCenter,
-          overflow: Overflow.visible,
+        child: Column(
           children: [
-            CustomPaint(
-              size: Size(deviceWidth, deviceHeight * 0.25),
-              painter: CurvePainter(),
-            ),
+            SizedBox(height: 10),
+            Post(),
+            SizedBox(height: 10),
+            Post(),
+            SizedBox(height: 10),
+            Post(),
+            SizedBox(height: 10),
             Post(),
           ],
         ),
