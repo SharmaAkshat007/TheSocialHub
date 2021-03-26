@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:petStore/services/authService.dart';
 import 'package:petStore/src/widgets/loading.dart';
+import 'feed.dart';
+import 'postForm.dart';
+import 'user.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -9,6 +11,22 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  int _screenNumber;
+
+  @override
+  void initState() {
+    super.initState();
+    _screenNumber = 0;
+  }
+
+  final List<Widget> _screens = [Feed(), PostForm(), User()];
+
+  void onTabTapped(int index) {
+    setState(() {
+      _screenNumber = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,26 +37,18 @@ class _HomeState extends State<Home> {
             if (user.connectionState == ConnectionState.waiting) {
               return Loading();
             } else {
-              return Center(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Welcome : ${user.data.email.toString()}',
-                      style: TextStyle(fontSize: 20),
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    FlatButton(
-                        color: Colors.purple,
-                        child: Text('Log Out'),
-                        onPressed: () async {
-                          Auth().signOut();
-
-                          Navigator.pushReplacementNamed(context, '/login');
-                        }),
+              return Scaffold(
+                body: _screens[_screenNumber],
+                bottomNavigationBar: BottomNavigationBar(
+                  currentIndex: _screenNumber,
+                  onTap: onTabTapped,
+                  items: [
+                    BottomNavigationBarItem(
+                        icon: Icon(Icons.home), label: 'Home'),
+                    BottomNavigationBarItem(
+                        icon: Icon(Icons.add), label: "Add"),
+                    BottomNavigationBarItem(
+                        icon: Icon(Icons.person), label: "Profile"),
                   ],
                 ),
               );
