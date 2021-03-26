@@ -40,15 +40,29 @@ class _HomeState extends State<Home> {
               return Scaffold(
                 body: _screens[_screenNumber],
                 bottomNavigationBar: BottomNavigationBar(
+                  selectedItemColor: Colors.purple,
+                  unselectedItemColor: Colors.black,
+                  iconSize: 28,
+                  elevation: 0.0,
+                  backgroundColor: Colors.purple[50],
                   currentIndex: _screenNumber,
                   onTap: onTabTapped,
                   items: [
                     BottomNavigationBarItem(
-                        icon: Icon(Icons.home), label: 'Home'),
+                        icon: Icon(
+                          Icons.home,
+                        ),
+                        label: 'Home'),
                     BottomNavigationBarItem(
-                        icon: Icon(Icons.add), label: "Add"),
+                        icon: Icon(
+                          Icons.add,
+                        ),
+                        label: "Add"),
                     BottomNavigationBarItem(
-                        icon: Icon(Icons.person), label: "Profile"),
+                        icon: Icon(
+                          Icons.person,
+                        ),
+                        label: "Profile"),
                   ],
                 ),
               );
