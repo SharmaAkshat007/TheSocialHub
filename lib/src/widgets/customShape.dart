@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 
-class Shape extends CustomPainter {
+class CurvePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     var paint = Paint();
-    paint.color = Colors.green[800];
-    paint.style = PaintingStyle.stroke;
-    paint.strokeWidth = 2.0;
+
+    paint.color = Colors.purple[400];
+    paint.style = PaintingStyle.fill;
 
     var path = Path();
 
-    print(size.height);
-    print(size.width);
-
-    path.lineTo(size.width, size.height);
+    path.moveTo(0, size.height);
+    path.quadraticBezierTo(
+        size.width / 2, size.height, size.width, size.height * 0.5);
+    path.lineTo(size.width, 0);
+    path.lineTo(0, 0);
 
     canvas.drawPath(path, paint);
   }

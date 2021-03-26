@@ -44,7 +44,7 @@ class _HomeState extends State<Home> {
                   unselectedItemColor: Colors.black,
                   iconSize: 28,
                   elevation: 0.0,
-                  backgroundColor: Colors.purple[50],
+                  //backgroundColor: Colors.purple[50],
                   currentIndex: _screenNumber,
                   onTap: onTabTapped,
                   items: [
