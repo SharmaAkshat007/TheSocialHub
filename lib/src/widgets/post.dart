@@ -57,7 +57,9 @@ class _PostState extends State<Post> {
             ],
           ),
         ),
-        Image(image: AssetImage('assets/images/elon.jpg')),
+        widget.postIndex % 2 == 0
+            ? Image(image: AssetImage('assets/images/elon.jpg'))
+            : Image(image: AssetImage('assets/images/tesla.jpg')),
         Row(children: [
           IconButton(
             padding: const EdgeInsets.all(0.0),
@@ -85,7 +87,7 @@ class _PostState extends State<Post> {
             alignment: Alignment.centerLeft,
             child: Container(
               child: Text(
-                'A very happy man.I am very good man and a very successful entreprenaur!',
+                'A very happy man.I am very good man and a very successful entrepreneur!',
                 style: TextStyle(fontSize: 15),
                 overflow: TextOverflow.visible,
               ),
