@@ -23,49 +23,60 @@ class _UserState extends State<User> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Container(
-          child: Column(
-            children: [
-              TopBanner(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  IconButton(
-                    onPressed: () {
-                      setState(() {
-                        grid = true;
-                      });
-                    },
-                    icon: Icon(Icons.grid_on_sharp),
-                    color: grid ? onColor : offColor,
-                    tooltip: 'Grid View',
-                    splashColor: Colors.purple[100],
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      setState(() {
-                        grid = false;
-                      });
-                    },
-                    icon: Icon(Icons.list_sharp),
-                    color: !grid ? onColor : offColor,
-                    tooltip: 'List View',
-                    splashColor: Colors.purple[100],
-                  ),
-                  IconButton(
-                    onPressed: () {},
-                    icon: Icon(Icons.mode_outlined),
-                    color: Colors.black,
-                    tooltip: 'Edit',
-                    splashColor: Colors.purple[100],
-                  ),
-                ],
-              ),
-              grid ? Grid() : ScrollList()
-            ],
+      body: CustomScrollView(
+        slivers: [
+          SliverToBoxAdapter(
+            child: TopBanner(),
           ),
-        ),
+          SliverAppBar(
+            elevation: 0.0,
+            backgroundColor: Colors.white,
+            snap: false,
+            floating: false,
+            pinned: true,
+            flexibleSpace: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                IconButton(
+                  onPressed: () {
+                    setState(() {
+                      grid = true;
+                    });
+                  },
+                  icon: Icon(Icons.grid_on_sharp),
+                  color: grid ? onColor : offColor,
+                  tooltip: 'Grid View',
+                  splashColor: Colors.purple[100],
+                ),
+                IconButton(
+                  onPressed: () {
+                    setState(() {
+                      grid = false;
+                    });
+                  },
+                  icon: Icon(Icons.list_sharp),
+                  color: !grid ? onColor : offColor,
+                  tooltip: 'List View',
+                  splashColor: Colors.purple[100],
+                ),
+                IconButton(
+                  onPressed: () {},
+                  icon: Icon(Icons.mode_outlined),
+                  color: Colors.black,
+                  tooltip: 'Edit',
+                  splashColor: Colors.purple[100],
+                ),
+              ],
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: Container(
+              child: Column(
+                children: [grid ? Grid() : ScrollList()],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -87,7 +87,7 @@ class _PostState extends State<Post> {
             alignment: Alignment.centerLeft,
             child: Container(
               child: Text(
-                'A very happy man.I am very good man and a very successful entrepreneur!',
+                'A very happy man.I am very good man and a very successful entreprenaur!',
                 style: TextStyle(fontSize: 15),
                 overflow: TextOverflow.visible,
               ),
