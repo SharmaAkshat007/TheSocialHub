@@ -24,22 +24,16 @@ class _FeedState extends State<Feed> {
             color: Colors.purple,
             icon: Icon(Icons.send),
             onPressed: () {},
+            tooltip: "Message",
+            splashColor: Colors.purple[100],
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(height: 10),
-            Post(),
-            SizedBox(height: 10),
-            Post(),
-            SizedBox(height: 10),
-            Post(),
-            SizedBox(height: 10),
-            Post(),
-          ],
-        ),
+      body: ListView.builder(
+        itemCount: 5,
+        itemBuilder: (BuildContext context, int index) {
+          return Post(postIndex: index);
+        },
       ),
     );
   }

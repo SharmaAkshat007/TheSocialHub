@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
 class Post extends StatefulWidget {
+  final int postIndex;
+
+  Post({this.postIndex}) : super();
   @override
   _PostState createState() => _PostState();
 }
@@ -8,6 +11,8 @@ class Post extends StatefulWidget {
 class _PostState extends State<Post> {
   bool liked;
   Color color;
+
+  int index;
 
   @override
   void initState() {
@@ -20,6 +25,9 @@ class _PostState extends State<Post> {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        SizedBox(
+          height: 10,
+        ),
         Padding(
           padding: const EdgeInsets.all(10.0),
           child: Row(
