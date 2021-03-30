@@ -10,6 +10,13 @@ class PostForm extends StatefulWidget {
 
 class _PostFormState extends State<PostForm> {
   File _image;
+  final _caption = TextEditingController();
+  final _formkey = GlobalKey<FormState>();
+  @override
+  void dispose() {
+    _caption.dispose();
+    super.dispose();
+  }
 
   void dialog() {
     showDialog(
@@ -97,34 +104,86 @@ class _PostFormState extends State<PostForm> {
     return Scaffold(
       body: Container(
         child: _image != null
-            ? Column(
-                children: [
-                  Image.file(
-                    _image,
-                    fit: BoxFit.contain,
-                    width: _deviceWidth,
-                    height: _deviceHeight * 0.8,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      IconButton(
-                        onPressed: dialog,
-                        iconSize: 30,
-                        color: Colors.purple[400],
-                        splashColor: Colors.purple[100],
-                        icon: Icon(Icons.redo),
+            ? SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Image.file(
+                      _image,
+                      fit: BoxFit.cover,
+                      width: _deviceWidth,
+                      height: _deviceHeight * 0.5,
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Container(
+                      width: _deviceWidth * 0.9,
+                      child: Form(
+                        key: _formkey,
+                        child: TextFormField(
+                          controller: _caption,
+                          cursorColor: Colors.purple,
+                          autocorrect: false,
+                          validator: (val) {
+                            if (val.isEmpty) {
+                              return "Please enter some caption";
+                            }
+                            return null;
+                          },
+                          style: TextStyle(
+                            fontSize: 21,
+                          ),
+                          decoration: InputDecoration(
+                            hintText: 'Write a caption...',
+                            hintStyle: TextStyle(
+                              fontSize: 21,
+                            ),
+                            errorStyle: TextStyle(fontSize: 13),
+                            errorBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.purple),
+                            ),
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.purple),
+                            ),
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.purple),
+                            ),
+                            focusedErrorBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.purple),
+                            ),
+                          ),
+                        ),
                       ),
-                      IconButton(
-                        onPressed: () {},
-                        iconSize: 30,
-                        color: Colors.purple[400],
-                        splashColor: Colors.purple[100],
-                        icon: Icon(Icons.done),
-                      ),
-                    ],
-                  ),
-                ],
+                    ),
+                    SizedBox(
+                      height: _deviceHeight / 6,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        IconButton(
+                          onPressed: dialog,
+                          iconSize: 30,
+                          color: Colors.purple[400],
+                          splashColor: Colors.purple[100],
+                          icon: Icon(Icons.redo),
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            if (_formkey.currentState.validate()) {
+                              print(_image);
+                              print(_caption.text);
+                            }
+                          },
+                          iconSize: 30,
+                          color: Colors.purple[400],
+                          splashColor: Colors.purple[100],
+                          icon: Icon(Icons.done),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               )
             : Column(mainAxisAlignment: MainAxisAlignment.center, children: [
                 Container(

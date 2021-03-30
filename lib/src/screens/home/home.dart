@@ -40,6 +40,7 @@ class _HomeState extends State<Home> {
               return Scaffold(
                 body: _screens[_screenNumber],
                 bottomNavigationBar: BottomNavigationBar(
+                  type: BottomNavigationBarType.fixed,
                   selectedItemColor: Colors.purple,
                   unselectedItemColor: Colors.black,
                   iconSize: 28,
