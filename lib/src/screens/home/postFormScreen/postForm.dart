@@ -11,6 +11,85 @@ class PostForm extends StatefulWidget {
 class _PostFormState extends State<PostForm> {
   File _image;
 
+  void dialog() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(
+              "Camera or Photos",
+              style: TextStyle(
+                fontSize: 19,
+                fontWeight: FontWeight.normal,
+              ),
+            ),
+            elevation: 30.0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            actions: [
+              Padding(
+                padding: const EdgeInsets.only(right: 5.0, bottom: 5.0),
+                child: IconButton(
+                  splashColor: Colors.purple[100],
+                  color: Colors.purple[400],
+                  icon: Icon(
+                    Icons.camera_alt,
+                  ),
+                  onPressed: () async {
+                    File image = await PickImage().captureImage(true);
+
+                    if (image != null) {
+                      setState(() {
+                        _image = image;
+                      });
+                      Navigator.pop(context);
+                    } else {
+                      Navigator.pop(context);
+                    }
+                  },
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(right: 5.0, bottom: 5.0),
+                child: IconButton(
+                  color: Colors.purple[400],
+                  splashColor: Colors.purple[100],
+                  icon: Icon(
+                    Icons.photo,
+                  ),
+                  onPressed: () async {
+                    dynamic image = await PickImage().captureImage(false);
+
+                    if (image != null) {
+                      setState(() {
+                        _image = image;
+                      });
+                      Navigator.pop(context);
+                    } else {
+                      Navigator.pop(context);
+                    }
+                  },
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(right: 5.0, bottom: 5.0),
+                child: IconButton(
+                  color: Colors.purple[400],
+                  splashColor: Colors.purple[100],
+                  icon: Icon(
+                    Icons.cancel,
+                  ),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+              ),
+            ],
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     final _deviceHeight = MediaQuery.of(context).size.height;
@@ -18,11 +97,34 @@ class _PostFormState extends State<PostForm> {
     return Scaffold(
       body: Container(
         child: _image != null
-            ? Image.file(
-                _image,
-                fit: BoxFit.contain,
-                width: _deviceWidth,
-                height: _deviceHeight,
+            ? Column(
+                children: [
+                  Image.file(
+                    _image,
+                    fit: BoxFit.contain,
+                    width: _deviceWidth,
+                    height: _deviceHeight * 0.8,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      IconButton(
+                        onPressed: dialog,
+                        iconSize: 30,
+                        color: Colors.purple[400],
+                        splashColor: Colors.purple[100],
+                        icon: Icon(Icons.redo),
+                      ),
+                      IconButton(
+                        onPressed: () {},
+                        iconSize: 30,
+                        color: Colors.purple[400],
+                        splashColor: Colors.purple[100],
+                        icon: Icon(Icons.done),
+                      ),
+                    ],
+                  ),
+                ],
               )
             : Column(mainAxisAlignment: MainAxisAlignment.center, children: [
                 Container(
@@ -36,60 +138,7 @@ class _PostFormState extends State<PostForm> {
                           Icons.add,
                           size: 28,
                         ),
-                        onPressed: () {
-                          showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  title: Text("Camera or Photos"),
-                                  actions: [
-                                    IconButton(
-                                      icon: Icon(
-                                        Icons.camera_alt,
-                                        color: Colors.purple,
-                                      ),
-                                      onPressed: () async {
-                                        File image = await PickImage()
-                                            .captureImage(true);
-
-                                        if (image != null) {
-                                          setState(() {
-                                            _image = image;
-                                          });
-                                          Navigator.pop(context);
-                                        }
-                                      },
-                                    ),
-                                    IconButton(
-                                      icon: Icon(
-                                        Icons.drive_folder_upload,
-                                        color: Colors.purple,
-                                      ),
-                                      onPressed: () async {
-                                        dynamic image = await PickImage()
-                                            .captureImage(false);
-
-                                        if (image != null) {
-                                          setState(() {
-                                            _image = image;
-                                          });
-                                          Navigator.pop(context);
-                                        }
-                                      },
-                                    ),
-                                    IconButton(
-                                      icon: Icon(
-                                        Icons.cancel,
-                                        color: Colors.purple,
-                                      ),
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                    ),
-                                  ],
-                                );
-                              });
-                        },
+                        onPressed: dialog,
                       ),
                       SizedBox(
                         height: 15,
