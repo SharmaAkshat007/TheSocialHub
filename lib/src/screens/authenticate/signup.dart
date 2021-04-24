@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:petStore/services/authService.dart';
 import 'package:petStore/src/widgets/loading.dart';
 import '../../../models/signUp.dart';
+import 'package:petStore/services/imagePicker.dart';
 
 class SignUp extends StatefulWidget {
   @override
@@ -14,11 +17,17 @@ class _SignUpState extends State<SignUp> {
   final SignUpUser user =
       new SignUpUser(name: '', email: '', password: '', confirmPassword: '');
 
+  File dp;
+
   bool _showValue;
 
   bool _showError;
 
   bool _loading;
+
+  bool _firebaseError;
+  bool _fileUploaded;
+
   final name = TextEditingController();
   final emailId = TextEditingController();
   final password = TextEditingController();
@@ -27,19 +36,102 @@ class _SignUpState extends State<SignUp> {
   @override
   void initState() {
     super.initState();
-    error = "Email already exists or password too weak!";
+
     _showError = false;
     _showValue = false;
     _loading = false;
+    _firebaseError = false;
+    _fileUploaded = false;
   }
 
-  String error;
   @override
   void dispose() {
     emailId.dispose();
     password.dispose();
     confirmpassword.dispose();
+    name.dispose();
     super.dispose();
+  }
+
+  void dialog() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(
+              "Camera or Photos",
+              style: TextStyle(
+                fontSize: 19,
+                fontWeight: FontWeight.normal,
+              ),
+            ),
+            elevation: 30.0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            actions: [
+              Padding(
+                padding: const EdgeInsets.only(right: 5.0, bottom: 5.0),
+                child: IconButton(
+                  splashColor: Colors.purple[100],
+                  color: Colors.purple[400],
+                  icon: Icon(
+                    Icons.camera_alt,
+                  ),
+                  onPressed: () async {
+                    File image = await PickImage().captureImage(true);
+
+                    if (image != null) {
+                      setState(() {
+                        dp = image;
+                        _fileUploaded = true;
+                      });
+                      Navigator.pop(context);
+                    } else {
+                      Navigator.pop(context);
+                    }
+                  },
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(right: 5.0, bottom: 5.0),
+                child: IconButton(
+                  color: Colors.purple[400],
+                  splashColor: Colors.purple[100],
+                  icon: Icon(
+                    Icons.photo,
+                  ),
+                  onPressed: () async {
+                    dynamic image = await PickImage().captureImage(false);
+
+                    if (image != null) {
+                      setState(() {
+                        dp = image;
+                        _fileUploaded = true;
+                      });
+                      Navigator.pop(context);
+                    } else {
+                      Navigator.pop(context);
+                    }
+                  },
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(right: 5.0, bottom: 5.0),
+                child: IconButton(
+                  color: Colors.purple[400],
+                  splashColor: Colors.purple[100],
+                  icon: Icon(
+                    Icons.cancel,
+                  ),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+              ),
+            ],
+          );
+        });
   }
 
   @override
@@ -50,7 +142,7 @@ class _SignUpState extends State<SignUp> {
             body: SafeArea(
               child: SingleChildScrollView(
                 child: Container(
-                  margin: EdgeInsets.only(top: 70),
+                  margin: EdgeInsets.only(top: 30),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
@@ -79,14 +171,16 @@ class _SignUpState extends State<SignUp> {
                                   icon: Icon(Icons.cancel_sharp),
                                 ),
                                 Text(
-                                  error,
+                                  _firebaseError
+                                      ? 'Email already exits or password too weak'
+                                      : 'Please upload your Profile Picture',
                                   style: TextStyle(
                                       color: Colors.red, fontSize: 15),
                                 ),
                               ],
                             )
                           : Text(''),
-                      SizedBox(height: 20),
+                      SizedBox(height: 10),
                       Form(
                         key: _form,
                         child: Column(
@@ -319,6 +413,33 @@ class _SignUpState extends State<SignUp> {
                         padding: EdgeInsets.only(left: 15, right: 15),
                         child: Row(
                           children: [
+                            IconButton(
+                              icon: Icon(Icons.file_upload),
+                              color: Colors.black,
+                              onPressed: dialog,
+                              tooltip: 'Add Image',
+                              splashColor: Colors.purple[100],
+                            ),
+                            Text(
+                              'Select your Profile Picture',
+                              style: TextStyle(
+                                fontSize: 15,
+                              ),
+                            ),
+                            SizedBox(width: 50),
+                            _fileUploaded
+                                ? Icon(
+                                    Icons.done,
+                                    color: Colors.green,
+                                  )
+                                : Text('')
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(left: 15, right: 15),
+                        child: Row(
+                          children: [
                             Checkbox(
                               value: _showValue,
                               activeColor: Colors.purple,
@@ -338,31 +459,44 @@ class _SignUpState extends State<SignUp> {
                         ),
                       ),
                       SizedBox(
-                        height: 20,
+                        height: 10,
                       ),
                       FlatButton(
                         onPressed: () async {
                           if (_form.currentState.validate()) {
-                            setState(() {
-                              _loading = true;
-                            });
-                            dynamic resultUser = await Auth()
-                                .registerWithEmailAndPassword(
-                                    user.name, user.email, user.password);
-
-                            if (resultUser == null) {
-                              print(user.name);
+                            if (dp == null) {
                               setState(() {
                                 _showError = true;
-                                _loading = false;
+
+                                _firebaseError = false;
                               });
                             } else {
-                              Navigator.pushReplacementNamed(context, '/login');
+                              user.profileImage = dp;
+                              setState(() {
+                                _loading = true;
+                              });
+                              dynamic resultUser = await Auth()
+                                  .registerWithEmailAndPassword(
+                                      user.name,
+                                      user.email,
+                                      user.password,
+                                      user.profileImage);
+
+                              if (resultUser == null) {
+                                setState(() {
+                                  _showError = true;
+                                  _firebaseError = true;
+                                  _loading = false;
+                                });
+                              } else {
+                                Navigator.pushReplacementNamed(
+                                    context, '/login');
+                              }
+                              emailId.clear();
+                              password.clear();
+                              confirmpassword.clear();
+                              name.clear();
                             }
-                            emailId.clear();
-                            password.clear();
-                            confirmpassword.clear();
-                            name.clear();
                           }
                         },
                         child: Text(
@@ -379,7 +513,7 @@ class _SignUpState extends State<SignUp> {
                             borderRadius:
                                 BorderRadius.all(Radius.circular(30))),
                       ),
-                      SizedBox(height: 25),
+                      SizedBox(height: 10),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [

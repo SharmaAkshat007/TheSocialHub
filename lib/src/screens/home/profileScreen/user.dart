@@ -61,6 +61,13 @@ class _UserState extends State<User> {
                   splashColor: Colors.purple[100],
                 ),
                 IconButton(
+                  onPressed: () {},
+                  icon: Icon(Icons.edit),
+                  color: Colors.black,
+                  tooltip: 'Edit',
+                  splashColor: Colors.purple[100],
+                ),
+                IconButton(
                   onPressed: () async {
                     await Auth().signOut();
                     Navigator.pushReplacementNamed(context, '/login');
