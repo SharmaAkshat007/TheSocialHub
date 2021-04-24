@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:petStore/src/screens/home/profileScreen/grid.dart';
 import 'package:petStore/src/screens/home/profileScreen/list.dart';
 import 'package:petStore/src/screens/home/profileScreen/topBanner.dart';
+import 'package:petStore/services/authService.dart';
 
 class User extends StatefulWidget {
   @override
@@ -60,10 +61,13 @@ class _UserState extends State<User> {
                   splashColor: Colors.purple[100],
                 ),
                 IconButton(
-                  onPressed: () {},
-                  icon: Icon(Icons.mode_outlined),
+                  onPressed: () async {
+                    await Auth().signOut();
+                    Navigator.pushReplacementNamed(context, '/login');
+                  },
+                  icon: Icon(Icons.logout),
                   color: Colors.black,
-                  tooltip: 'Edit',
+                  tooltip: 'Logout',
                   splashColor: Colors.purple[100],
                 ),
               ],

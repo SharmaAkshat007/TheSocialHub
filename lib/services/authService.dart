@@ -7,14 +7,15 @@ class Auth {
     return _auth.onAuthStateChanged;
   }
 
-  Future registerWithEmailAndPassword(String email, String password) async {
+  Future registerWithEmailAndPassword(
+      String name, String email, String password) async {
+    print(name);
     try {
       AuthResult result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
       FirebaseUser user = result.user;
       return user;
     } catch (error) {
-      //print(error.toString());
       return null;
     }
   }

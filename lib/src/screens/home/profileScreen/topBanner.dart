@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 class TopBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final _deviceWidth = MediaQuery.of(context).size.width;
     return Column(
       children: [
         Container(
@@ -26,15 +25,6 @@ class TopBanner extends StatelessWidget {
                         fontSize: 33,
                         fontWeight: FontWeight.w600,
                         color: Colors.purple),
-                  ),
-                  SizedBox(height: 15),
-                  Container(
-                    width: _deviceWidth * 0.6,
-                    child: Text(
-                      'I am an entrepreneur and my name is elon musk.',
-                      textAlign: TextAlign.left,
-                      style: TextStyle(fontSize: 16),
-                    ),
                   ),
                 ],
               ),

@@ -12,14 +12,14 @@ class _SignUpState extends State<SignUp> {
   final _form = GlobalKey<FormState>();
 
   final SignUpUser user =
-      new SignUpUser(email: '', password: '', confirmPassword: '');
+      new SignUpUser(name: '', email: '', password: '', confirmPassword: '');
 
   bool _showValue;
 
   bool _showError;
 
   bool _loading;
-
+  final name = TextEditingController();
   final emailId = TextEditingController();
   final password = TextEditingController();
   final confirmpassword = TextEditingController();
@@ -91,6 +91,60 @@ class _SignUpState extends State<SignUp> {
                         key: _form,
                         child: Column(
                           children: [
+                            Padding(
+                              padding: EdgeInsets.only(left: 15, right: 15),
+                              child: TextFormField(
+                                controller: name,
+                                cursorColor: Colors.purple,
+                                onChanged: (val) {
+                                  setState(() {
+                                    user.name = val;
+                                  });
+                                },
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return 'Please enter your name';
+                                  }
+                                  return null;
+                                },
+                                style: TextStyle(
+                                  fontSize: 20,
+                                ),
+                                decoration: InputDecoration(
+                                  labelText: 'Name',
+                                  labelStyle: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 18,
+                                  ),
+                                  prefixIcon: Icon(Icons.account_circle_sharp,
+                                      color: Colors.purple),
+                                  errorStyle: TextStyle(fontSize: 13),
+                                  focusedErrorBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(30),
+                                    borderSide:
+                                        BorderSide(color: Colors.purple),
+                                  ),
+                                  errorBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(30),
+                                    borderSide:
+                                        BorderSide(color: Colors.purple),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(30),
+                                    borderSide:
+                                        BorderSide(color: Colors.purple),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(30),
+                                    borderSide:
+                                        BorderSide(color: Colors.purple),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 30,
+                            ),
                             Padding(
                               padding: EdgeInsets.only(left: 15, right: 15),
                               child: TextFormField(
@@ -294,9 +348,10 @@ class _SignUpState extends State<SignUp> {
                             });
                             dynamic resultUser = await Auth()
                                 .registerWithEmailAndPassword(
-                                    user.email, user.password);
+                                    user.name, user.email, user.password);
 
                             if (resultUser == null) {
+                              print(user.name);
                               setState(() {
                                 _showError = true;
                                 _loading = false;
@@ -307,6 +362,7 @@ class _SignUpState extends State<SignUp> {
                             emailId.clear();
                             password.clear();
                             confirmpassword.clear();
+                            name.clear();
                           }
                         },
                         child: Text(
