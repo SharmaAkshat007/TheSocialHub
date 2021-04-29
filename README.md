@@ -1,4 +1,4 @@
-# PetStore
+# TheSocialHub
 
 A new Flutter project.
 
