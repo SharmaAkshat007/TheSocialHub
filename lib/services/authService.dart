@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:io';
 
+import 'package:petStore/services/dbService.dart';
+
 class Auth {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -15,6 +17,9 @@ class Auth {
       AuthResult result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
       FirebaseUser user = result.user;
+
+      await DbService(uid: user.uid).updateUserData(name, profileImage);
+
       return user;
     } catch (error) {
       return null;

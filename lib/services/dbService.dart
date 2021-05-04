@@ -1,13 +1,24 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:io';
+
+import 'package:petStore/services/storageService.dart';
 
 class DbService {
-  final CollectionReference posts = Firestore.instance.collection('Posts');
+  final String uid;
 
-  Future<void> insert() async {}
+  DbService({this.uid});
 
-  Future<void> update() async {}
+  final CollectionReference user = Firestore.instance.collection("User");
 
-  Future<void> delete() async {}
+  Stream<QuerySnapshot> get data {
+    return user.snapshots();
+  }
 
-  Future<void> read() async {}
+  Future updateUserData(String name, File image) async {
+    dynamic url = await StorageService(profileImage: image).uploadImage();
+
+    return await user
+        .document(uid)
+        .setData({"name": name, "profileImage": url});
+  }
 }

@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class TopBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<QuerySnapshot>(context);
+    for (var u in user.documents) {
+      print(u.data);
+    }
     return Column(
       children: [
         Container(
