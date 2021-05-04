@@ -4,12 +4,13 @@ import 'package:path/path.dart' as Path;
 
 class StorageService {
   final File profileImage;
+  final String folderName;
 
-  StorageService({this.profileImage});
+  StorageService({this.profileImage, this.folderName});
 
   Future uploadImage() async {
     try {
-      String filePath = "ProfileImages/" + Path.basename(profileImage.path);
+      String filePath = folderName + "/" + Path.basename(profileImage.path);
       final StorageReference storageReference =
           FirebaseStorage().ref().child(filePath);
       final StorageUploadTask uploadTask =

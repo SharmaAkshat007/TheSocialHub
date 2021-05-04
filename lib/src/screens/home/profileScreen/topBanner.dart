@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class TopBanner extends StatefulWidget {
-  String name;
-  String profileImageUrl;
+  final name;
+  final profileImageUrl;
 
   TopBanner({Key key, this.name, this.profileImageUrl});
 

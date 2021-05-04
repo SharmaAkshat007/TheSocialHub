@@ -10,9 +10,7 @@ class ScrollList extends StatelessWidget {
       scrollDirection: Axis.vertical,
       physics: ScrollPhysics(),
       itemBuilder: (BuildContext context, int index) {
-        return Post(
-          postIndex: index,
-        );
+        return Post();
       },
     );
   }

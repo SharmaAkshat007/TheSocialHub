@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
 class Post extends StatefulWidget {
-  final int postIndex;
+  final caption;
+  final date;
+  final postImage;
 
-  Post({this.postIndex}) : super();
+  Post({this.caption, this.date, this.postImage}) : super();
   @override
   _PostState createState() => _PostState();
 }
@@ -21,8 +23,26 @@ class _PostState extends State<Post> {
     color = liked ? Colors.blue : Colors.purple;
   }
 
+  dynamic dateFromatting(var timstamp) {
+    var date = timstamp.toDate();
+
+    var output = date.day.toString() +
+        '/' +
+        date.month.toString() +
+        '/' +
+        date.year.toString() +
+        '  ' +
+        date.hour.toString() +
+        ':' +
+        date.minute.toString();
+
+    return output;
+  }
+
   @override
   Widget build(BuildContext context) {
+    final deviceWidth = MediaQuery.of(context).size.width;
+    final deviceHeight = MediaQuery.of(context).size.width;
     return Column(
       children: [
         SizedBox(
@@ -49,7 +69,7 @@ class _PostState extends State<Post> {
                     height: 3.0,
                   ),
                   Text(
-                    '12/12/2001 12:34 AM',
+                    dateFromatting(widget.date),
                     style: TextStyle(fontSize: 14),
                   )
                 ],
@@ -57,9 +77,12 @@ class _PostState extends State<Post> {
             ],
           ),
         ),
-        widget.postIndex % 2 == 0
-            ? Image(image: AssetImage('assets/images/elon.jpg'))
-            : Image(image: AssetImage('assets/images/tesla.jpg')),
+        Image(
+          image: NetworkImage(widget.postImage),
+          height: deviceHeight,
+          width: deviceWidth,
+          fit: BoxFit.cover,
+        ),
         Row(children: [
           IconButton(
             padding: const EdgeInsets.all(0.0),
@@ -87,7 +110,7 @@ class _PostState extends State<Post> {
             alignment: Alignment.centerLeft,
             child: Container(
               child: Text(
-                'A very happy man.I am very good man and a very successful entreprenaur!',
+                widget.caption,
                 style: TextStyle(fontSize: 15),
                 overflow: TextOverflow.visible,
               ),

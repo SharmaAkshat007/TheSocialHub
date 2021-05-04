@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:petStore/services/authService.dart';
 import 'package:petStore/src/widgets/loading.dart';
-import '../../../models/signUp.dart';
+import '../../../models/signUpModel.dart';
 import 'package:petStore/services/imagePicker.dart';
 
 class SignUp extends StatefulWidget {

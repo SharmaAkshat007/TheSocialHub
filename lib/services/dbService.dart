@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:petStore/models/postModel.dart';
+
 import 'dart:io';
 import 'package:petStore/services/storageService.dart';
-import 'package:petStore/models/userModel.dart';
 
 class DbService {
   final String uid;
@@ -10,27 +11,44 @@ class DbService {
 
   final CollectionReference user = Firestore.instance.collection("User");
 
-  Stream<List<Users>> get data {
-    return user.snapshots().map(_userData);
-  }
+  final CollectionReference post = Firestore.instance.collection("Post");
 
-  List<Users> _userData(QuerySnapshot snapshot) {
-    return snapshot.documents.map((doc) {
-      return Users(
-          name: doc.data['name'] ?? '',
-          profileImage: doc.data['profileImage'] ?? '');
-    }).toList();
+  Stream<QuerySnapshot> get data {
+    return user.snapshots();
   }
 
   Future updateUserData(String name, File image) async {
-    dynamic url = await StorageService(profileImage: image).uploadImage();
+    dynamic url =
+        await StorageService(profileImage: image, folderName: "ProfileImages")
+            .uploadImage();
 
     return await user
         .document(uid)
         .setData({"name": name, "profileImage": url});
   }
 
-  Stream<DocumentSnapshot> getData(String documentID) {
-    return user.document(documentID).snapshots();
+  Stream<DocumentSnapshot> getUserData() {
+    return user.document(uid).snapshots();
+  }
+
+  Future updatePostData(String caption, var date, File postImage) async {
+    dynamic url =
+        await StorageService(profileImage: postImage, folderName: "PostImages")
+            .uploadImage();
+    return await post.document().setData(
+        {"caption": caption, "date": date, 'postImage': url, 'user_uid': uid});
+  }
+
+  List<Post> _postData(QuerySnapshot snapshot) {
+    return snapshot.documents.map((doc) {
+      return Post(
+          caption: doc['caption'],
+          date: doc['date'],
+          postImage: doc['postImage']);
+    }).toList();
+  }
+
+  Stream<List<Post>> getPosts() {
+    return post.snapshots().map(_postData);
   }
 }

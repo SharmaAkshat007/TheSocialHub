@@ -1,7 +1,10 @@
 import 'dart:io';
-
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:petStore/services/dbService.dart';
 import 'package:petStore/services/imagePicker.dart';
+import 'package:petStore/src/widgets/loading.dart';
+import 'package:provider/provider.dart';
 
 class PostForm extends StatefulWidget {
   @override
@@ -12,6 +15,9 @@ class _PostFormState extends State<PostForm> {
   File _image;
   final _caption = TextEditingController();
   final _formkey = GlobalKey<FormState>();
+
+  bool isUploading = false;
+
   @override
   void dispose() {
     _caption.dispose();
@@ -101,90 +107,103 @@ class _PostFormState extends State<PostForm> {
   Widget build(BuildContext context) {
     final _deviceHeight = MediaQuery.of(context).size.height;
     final _deviceWidth = MediaQuery.of(context).size.width;
+    FirebaseUser user = Provider.of<FirebaseUser>(context);
     return Scaffold(
       body: Container(
         child: _image != null
-            ? SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Image.file(
-                      _image,
-                      fit: BoxFit.cover,
-                      width: _deviceWidth,
-                      height: _deviceHeight * 0.5,
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Container(
-                      width: _deviceWidth * 0.9,
-                      child: Form(
-                        key: _formkey,
-                        child: TextFormField(
-                          controller: _caption,
-                          cursorColor: Colors.purple,
-                          autocorrect: false,
-                          validator: (val) {
-                            if (val.isEmpty) {
-                              return "Please enter some caption";
-                            }
-                            return null;
-                          },
-                          style: TextStyle(
-                            fontSize: 21,
-                          ),
-                          decoration: InputDecoration(
-                            hintText: 'Write a caption...',
-                            hintStyle: TextStyle(
-                              fontSize: 21,
-                            ),
-                            errorStyle: TextStyle(fontSize: 13),
-                            errorBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.purple),
-                            ),
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.purple),
-                            ),
-                            focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.purple),
-                            ),
-                            focusedErrorBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.purple),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: _deviceHeight / 6,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+            ? isUploading == true
+                ? Loading()
+                : SingleChildScrollView(
+                    child: Column(
                       children: [
-                        IconButton(
-                          onPressed: dialog,
-                          iconSize: 30,
-                          color: Colors.purple[400],
-                          splashColor: Colors.purple[100],
-                          icon: Icon(Icons.redo),
+                        Image.file(
+                          _image,
+                          fit: BoxFit.cover,
+                          width: _deviceWidth,
+                          height: _deviceHeight * 0.5,
                         ),
-                        IconButton(
-                          onPressed: () {
-                            if (_formkey.currentState.validate()) {
-                              print(_image);
-                              print(_caption.text);
-                            }
-                          },
-                          iconSize: 30,
-                          color: Colors.purple[400],
-                          splashColor: Colors.purple[100],
-                          icon: Icon(Icons.done),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Container(
+                          width: _deviceWidth * 0.9,
+                          child: Form(
+                            key: _formkey,
+                            child: TextFormField(
+                              controller: _caption,
+                              cursorColor: Colors.purple,
+                              autocorrect: false,
+                              validator: (val) {
+                                if (val.isEmpty) {
+                                  return "Please enter some caption";
+                                }
+                                return null;
+                              },
+                              style: TextStyle(
+                                fontSize: 21,
+                              ),
+                              decoration: InputDecoration(
+                                hintText: 'Write a caption...',
+                                hintStyle: TextStyle(
+                                  fontSize: 21,
+                                ),
+                                errorStyle: TextStyle(fontSize: 13),
+                                errorBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.purple),
+                                ),
+                                enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.purple),
+                                ),
+                                focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.purple),
+                                ),
+                                focusedErrorBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.purple),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: _deviceHeight / 6,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            IconButton(
+                              onPressed: dialog,
+                              iconSize: 30,
+                              color: Colors.purple[400],
+                              splashColor: Colors.purple[100],
+                              icon: Icon(Icons.redo),
+                            ),
+                            IconButton(
+                              onPressed: () async {
+                                if (_formkey.currentState.validate()) {
+                                  File newImage = _image;
+                                  setState(() {
+                                    isUploading = true;
+                                  });
+                                  await DbService(uid: user.uid).updatePostData(
+                                      _caption.text, DateTime.now(), newImage);
+
+                                  setState(() {
+                                    isUploading = false;
+                                  });
+                                  Navigator.pushReplacementNamed(
+                                      context, '/home');
+                                }
+                              },
+                              iconSize: 30,
+                              color: Colors.purple[400],
+                              splashColor: Colors.purple[100],
+                              icon: Icon(Icons.done),
+                            ),
+                          ],
                         ),
                       ],
                     ),
-                  ],
-                ),
-              )
+                  )
             : Column(mainAxisAlignment: MainAxisAlignment.center, children: [
                 Container(
                   width: _deviceWidth,
