@@ -1,12 +1,10 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:petStore/src/screens/home/homeScreen/feed.dart';
 import 'package:petStore/src/screens/home/postFormScreen/postForm.dart';
 import 'package:petStore/src/screens/home/profileScreen/user.dart';
 import 'package:petStore/src/widgets/loading.dart';
-import 'package:petStore/services/dbService.dart';
-import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -32,51 +30,48 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamProvider<QuerySnapshot>.value(
-      value: DbService().data,
-      child: Scaffold(
-        body: SafeArea(
-          child: FutureBuilder(
-            future: FirebaseAuth.instance.currentUser(),
-            builder: (BuildContext context, AsyncSnapshot user) {
-              if (user.connectionState == ConnectionState.waiting) {
-                return Loading();
-              } else {
-                return Scaffold(
-                  body: _screens[_screenNumber],
-                  bottomNavigationBar: BottomNavigationBar(
-                    type: BottomNavigationBarType.fixed,
-                    selectedItemColor: Colors.purple,
-                    unselectedItemColor: Colors.black,
-                    iconSize: 28,
-                    elevation: 20.0,
-                    currentIndex: _screenNumber,
-                    onTap: onTabTapped,
-                    items: [
-                      BottomNavigationBarItem(
-                          icon: Icon(
-                            Icons.home,
-                            size: 30,
-                          ),
-                          label: 'Home'),
-                      BottomNavigationBarItem(
-                          icon: Icon(
-                            Icons.add,
-                            size: 30,
-                          ),
-                          label: "Add"),
-                      BottomNavigationBarItem(
-                          icon: Icon(
-                            Icons.person,
-                            size: 30,
-                          ),
-                          label: "Profile"),
-                    ],
-                  ),
-                );
-              }
-            },
-          ),
+    return Scaffold(
+      body: SafeArea(
+        child: FutureBuilder(
+          future: FirebaseAuth.instance.currentUser(),
+          builder: (BuildContext context, AsyncSnapshot user) {
+            if (user.connectionState == ConnectionState.waiting) {
+              return Loading();
+            } else {
+              return Scaffold(
+                body: _screens[_screenNumber],
+                bottomNavigationBar: BottomNavigationBar(
+                  type: BottomNavigationBarType.fixed,
+                  selectedItemColor: Colors.purple,
+                  unselectedItemColor: Colors.black,
+                  iconSize: 28,
+                  elevation: 20.0,
+                  currentIndex: _screenNumber,
+                  onTap: onTabTapped,
+                  items: [
+                    BottomNavigationBarItem(
+                        icon: Icon(
+                          Icons.home,
+                          size: 30,
+                        ),
+                        label: 'Home'),
+                    BottomNavigationBarItem(
+                        icon: Icon(
+                          Icons.add,
+                          size: 30,
+                        ),
+                        label: "Add"),
+                    BottomNavigationBarItem(
+                        icon: Icon(
+                          Icons.person,
+                          size: 30,
+                        ),
+                        label: "Profile"),
+                  ],
+                ),
+              );
+            }
+          },
         ),
       ),
     );

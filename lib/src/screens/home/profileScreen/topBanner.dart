@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
-class TopBanner extends StatelessWidget {
+class TopBanner extends StatefulWidget {
+  String name;
+  String profileImageUrl;
+
+  TopBanner({Key key, this.name, this.profileImageUrl});
+
+  @override
+  _TopBannerState createState() => _TopBannerState();
+}
+
+class _TopBannerState extends State<TopBanner> {
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<QuerySnapshot>(context);
-    for (var u in user.documents) {
-      print(u.data);
-    }
     return Column(
       children: [
         Container(
@@ -26,7 +30,7 @@ class TopBanner extends StatelessWidget {
                   ),
                   SizedBox(height: 8),
                   Text(
-                    'Elon Musk!',
+                    widget.name,
                     style: TextStyle(
                         fontSize: 33,
                         fontWeight: FontWeight.w600,
@@ -36,7 +40,8 @@ class TopBanner extends StatelessWidget {
               ),
               CircleAvatar(
                 radius: 40,
-                backgroundImage: AssetImage('assets/images/elon.jpg'),
+                backgroundImage: NetworkImage(widget.profileImageUrl),
+                backgroundColor: Colors.transparent,
               ),
             ],
           ),
