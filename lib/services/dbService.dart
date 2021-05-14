@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:petStore/models/postModel.dart';
 
 import 'dart:io';
 import 'package:petStore/services/storageService.dart';
@@ -47,14 +46,5 @@ class DbService {
       'name': name,
       "profileImage": profileImage,
     });
-  }
-
-  List<Post> _postData(QuerySnapshot snapshot) {
-    return snapshot.documents.map((doc) {
-      return Post(
-          caption: doc['caption'],
-          date: doc['date'],
-          postImage: doc['postImage']);
-    }).toList();
   }
 }

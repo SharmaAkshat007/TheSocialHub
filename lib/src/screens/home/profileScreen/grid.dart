@@ -1,25 +1,28 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-Widget imageTile(int index) {
-  return index % 2 == 0
-      ? Image(image: AssetImage('assets/images/elon.jpg'))
-      : Image(
-          image: AssetImage('assets/images/tesla.jpg'),
-        );
+Widget imageTile(DocumentSnapshot post) {
+  return Image(
+    image: NetworkImage(post.data['postImage']),
+  );
 }
 
 class Grid extends StatelessWidget {
+  final currentPosts;
+
+  Grid({this.currentPosts});
+
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
       shrinkWrap: true,
       physics: ScrollPhysics(),
       itemBuilder: (BuildContext context, int index) {
-        return imageTile(index);
+        return imageTile(currentPosts[index]);
       },
-      itemCount: 51,
+      itemCount: currentPosts.length,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 3, childAspectRatio: 1.5),
+          crossAxisCount: 3, childAspectRatio: 0.8),
     );
   }
 }

@@ -1,8 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:petStore/src/screens/home/profileScreen/grid.dart';
 import 'package:petStore/src/screens/home/profileScreen/list.dart';
 import 'package:petStore/src/screens/home/profileScreen/topBanner.dart';
 import 'package:petStore/services/authService.dart';
+import 'package:provider/provider.dart';
 
 class User extends StatefulWidget {
   @override
@@ -21,8 +24,24 @@ class _UserState extends State<User> {
     grid = true;
   }
 
+  void getCurrentUserPosts(QuerySnapshot allPosts, FirebaseUser currentUser,
+      List<DocumentSnapshot> currentPosts) {
+    for (DocumentSnapshot doc in allPosts.documents) {
+      if (doc.data['user_uid'] == currentUser.uid) {
+        currentPosts.add(doc);
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    QuerySnapshot allPosts = Provider.of<QuerySnapshot>(context);
+    FirebaseUser currentUser = Provider.of<FirebaseUser>(context);
+
+    List<DocumentSnapshot> currentPosts = [];
+
+    getCurrentUserPosts(allPosts, currentUser, currentPosts);
+
     return Scaffold(
       body: CustomScrollView(
         slivers: [
@@ -83,7 +102,13 @@ class _UserState extends State<User> {
           SliverToBoxAdapter(
             child: Container(
               child: Column(
-                children: [grid ? Grid() : ScrollList()],
+                children: [
+                  grid
+                      ? Grid(
+                          currentPosts: currentPosts,
+                        )
+                      : ScrollList(currentPosts: currentPosts)
+                ],
               ),
             ),
           ),

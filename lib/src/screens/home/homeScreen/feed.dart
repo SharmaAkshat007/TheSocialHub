@@ -34,7 +34,7 @@ class _FeedState extends State<Feed> {
         ],
       ),
       body: ListView.builder(
-        itemCount: posts.documents == null ? 0 : posts.documents.length,
+        itemCount: posts.documents.length,
         itemBuilder: (BuildContext context, int index) {
           return Post(
             post: posts.documents[index],

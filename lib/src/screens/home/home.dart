@@ -38,7 +38,7 @@ class _HomeState extends State<Home> {
           value: DbService(uid: user.uid).data,
         ),
         StreamProvider<QuerySnapshot>.value(
-            value: DbService(uid: user.uid).posts)
+            value: DbService(uid: user.uid).posts),
       ],
       child: Scaffold(
         body: SafeArea(
