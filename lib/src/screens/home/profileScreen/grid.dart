@@ -22,7 +22,10 @@ class Grid extends StatelessWidget {
       },
       itemCount: currentPosts.length,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 3, childAspectRatio: 0.8),
+          crossAxisCount: 3,
+          childAspectRatio: 0.75,
+          crossAxisSpacing: 1.0,
+          mainAxisSpacing: 1.0),
     );
   }
 }

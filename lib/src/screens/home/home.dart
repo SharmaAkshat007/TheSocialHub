@@ -5,6 +5,7 @@ import 'package:petStore/services/dbService.dart';
 import 'package:petStore/src/screens/home/homeScreen/feed.dart';
 import 'package:petStore/src/screens/home/postFormScreen/postForm.dart';
 import 'package:petStore/src/screens/home/profileScreen/user.dart';
+
 import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {
@@ -32,6 +33,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     FirebaseUser user = Provider.of<FirebaseUser>(context);
+
     return MultiProvider(
       providers: [
         StreamProvider<DocumentSnapshot>.value(
