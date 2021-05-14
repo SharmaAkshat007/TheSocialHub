@@ -1,5 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:petStore/models/userModel.dart';
 import 'package:provider/provider.dart';
 
 class TopBanner extends StatefulWidget {
@@ -10,7 +10,7 @@ class TopBanner extends StatefulWidget {
 class _TopBannerState extends State<TopBanner> {
   @override
   Widget build(BuildContext context) {
-    DocumentSnapshot userInfo = Provider.of<DocumentSnapshot>(context);
+    UserModel userInfo = Provider.of<UserModel>(context);
 
     return Column(
       children: [
@@ -29,7 +29,7 @@ class _TopBannerState extends State<TopBanner> {
                   ),
                   SizedBox(height: 8),
                   Text(
-                    userInfo.data['name'],
+                    userInfo.name,
                     style: TextStyle(
                         fontSize: 33,
                         fontWeight: FontWeight.w600,
@@ -39,7 +39,9 @@ class _TopBannerState extends State<TopBanner> {
               ),
               CircleAvatar(
                 radius: 40,
-                backgroundImage: NetworkImage(userInfo.data['profileImage']),
+                backgroundImage: userInfo.profileImage != ''
+                    ? NetworkImage(userInfo.profileImage)
+                    : AssetImage('assets/images/whitescreen.jpg'),
                 backgroundColor: Colors.transparent,
               ),
             ],

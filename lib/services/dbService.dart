@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-
 import 'dart:io';
 import 'package:petStore/services/storageService.dart';
+import 'package:petStore/models/userModel.dart';
 
 class DbService {
   final String uid;
@@ -14,8 +14,11 @@ class DbService {
 
   // User
 
-  Stream<DocumentSnapshot> get data {
-    return user.document(uid).snapshots();
+  Stream<UserModel> get data {
+    return user.document(uid).snapshots().map((doc) {
+      return UserModel(
+          name: doc.data['name'], profileImage: doc.data['profileImage']);
+    });
   }
 
   Future updateUserData(String name, File image) async {

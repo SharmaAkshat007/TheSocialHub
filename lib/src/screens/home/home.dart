@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:petStore/models/userModel.dart';
 import 'package:petStore/services/dbService.dart';
 import 'package:petStore/src/screens/home/homeScreen/feed.dart';
 import 'package:petStore/src/screens/home/postFormScreen/postForm.dart';
 import 'package:petStore/src/screens/home/profileScreen/user.dart';
-
 import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {
@@ -36,8 +36,9 @@ class _HomeState extends State<Home> {
 
     return MultiProvider(
       providers: [
-        StreamProvider<DocumentSnapshot>.value(
+        StreamProvider<UserModel>.value(
           value: DbService(uid: user.uid).data,
+          initialData: UserModel(name: '', profileImage: ''),
         ),
         StreamProvider<QuerySnapshot>.value(
             value: DbService(uid: user.uid).posts),

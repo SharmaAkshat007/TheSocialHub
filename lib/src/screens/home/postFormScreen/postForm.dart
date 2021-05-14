@@ -1,8 +1,7 @@
 import 'dart:io';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:petStore/models/userModel.dart';
 import 'package:petStore/services/dbService.dart';
 import 'package:petStore/services/imagePicker.dart';
 import 'package:petStore/src/widgets/loading.dart';
@@ -110,7 +109,7 @@ class _PostFormState extends State<PostForm> {
     final _deviceHeight = MediaQuery.of(context).size.height;
     final _deviceWidth = MediaQuery.of(context).size.width;
     FirebaseUser user = Provider.of<FirebaseUser>(context);
-    DocumentSnapshot userInfo = Provider.of<DocumentSnapshot>(context);
+    UserModel userInfo = Provider.of<UserModel>(context);
 
     return Scaffold(
       body: Container(
@@ -192,8 +191,8 @@ class _PostFormState extends State<PostForm> {
                                       _caption.text,
                                       DateTime.now(),
                                       newImage,
-                                      userInfo.data['name'],
-                                      userInfo.data['profileImage']);
+                                      userInfo.name,
+                                      userInfo.profileImage);
 
                                   setState(() {
                                     isUploading = false;
