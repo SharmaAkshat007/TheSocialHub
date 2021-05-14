@@ -1,11 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class TopBanner extends StatefulWidget {
-  final name;
-  final profileImageUrl;
-
-  TopBanner({Key key, this.name, this.profileImageUrl});
-
   @override
   _TopBannerState createState() => _TopBannerState();
 }
@@ -13,6 +10,8 @@ class TopBanner extends StatefulWidget {
 class _TopBannerState extends State<TopBanner> {
   @override
   Widget build(BuildContext context) {
+    DocumentSnapshot userInfo = Provider.of<DocumentSnapshot>(context);
+
     return Column(
       children: [
         Container(
@@ -30,7 +29,7 @@ class _TopBannerState extends State<TopBanner> {
                   ),
                   SizedBox(height: 8),
                   Text(
-                    widget.name,
+                    userInfo.data['name'],
                     style: TextStyle(
                         fontSize: 33,
                         fontWeight: FontWeight.w600,
@@ -40,7 +39,7 @@ class _TopBannerState extends State<TopBanner> {
               ),
               CircleAvatar(
                 radius: 40,
-                backgroundImage: NetworkImage(widget.profileImageUrl),
+                backgroundImage: NetworkImage(userInfo.data['profileImage']),
                 backgroundColor: Colors.transparent,
               ),
             ],

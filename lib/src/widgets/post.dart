@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 
 class Post extends StatefulWidget {
-  final caption;
-  final date;
-  final postImage;
+  final post;
 
-  Post({this.caption, this.date, this.postImage}) : super();
+  Post({this.post}) : super();
+
   @override
   _PostState createState() => _PostState();
 }
@@ -23,8 +22,8 @@ class _PostState extends State<Post> {
     color = liked ? Colors.blue : Colors.purple;
   }
 
-  dynamic dateFromatting(var timstamp) {
-    var date = timstamp.toDate();
+  dynamic getDate(var timestamp) {
+    var date = timestamp.toDate();
 
     var output = date.day.toString() +
         '/' +
@@ -43,6 +42,7 @@ class _PostState extends State<Post> {
   Widget build(BuildContext context) {
     final deviceWidth = MediaQuery.of(context).size.width;
     final deviceHeight = MediaQuery.of(context).size.width;
+
     return Column(
       children: [
         SizedBox(
@@ -54,7 +54,7 @@ class _PostState extends State<Post> {
             children: [
               CircleAvatar(
                 radius: 24,
-                backgroundImage: AssetImage('assets/images/elon.jpg'),
+                backgroundImage: NetworkImage(widget.post.data['profileImage']),
               ),
               SizedBox(
                 width: 10,
@@ -62,14 +62,14 @@ class _PostState extends State<Post> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Elon Musk',
+                  Text(widget.post.data['name'],
                       style:
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
                   SizedBox(
                     height: 3.0,
                   ),
                   Text(
-                    dateFromatting(widget.date),
+                    getDate(widget.post.data['date']),
                     style: TextStyle(fontSize: 14),
                   )
                 ],
@@ -78,7 +78,7 @@ class _PostState extends State<Post> {
           ),
         ),
         Image(
-          image: NetworkImage(widget.postImage),
+          image: NetworkImage(widget.post.data['postImage']),
           height: deviceHeight,
           width: deviceWidth,
           fit: BoxFit.cover,
@@ -110,7 +110,7 @@ class _PostState extends State<Post> {
             alignment: Alignment.centerLeft,
             child: Container(
               child: Text(
-                widget.caption,
+                widget.post.data['caption'],
                 style: TextStyle(fontSize: 15),
                 overflow: TextOverflow.visible,
               ),

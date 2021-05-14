@@ -13,8 +13,10 @@ class DbService {
 
   final CollectionReference post = Firestore.instance.collection("Post");
 
-  Stream<QuerySnapshot> get data {
-    return user.snapshots();
+  // User
+
+  Stream<DocumentSnapshot> get data {
+    return user.document(uid).snapshots();
   }
 
   Future updateUserData(String name, File image) async {
@@ -27,16 +29,24 @@ class DbService {
         .setData({"name": name, "profileImage": url});
   }
 
-  Stream<DocumentSnapshot> getUserData() {
-    return user.document(uid).snapshots();
+  // Post
+  Stream<QuerySnapshot> get posts {
+    return post.snapshots();
   }
 
-  Future updatePostData(String caption, var date, File postImage) async {
+  Future updatePostData(String caption, var date, File postImage, String name,
+      String profileImage) async {
     dynamic url =
         await StorageService(profileImage: postImage, folderName: "PostImages")
             .uploadImage();
-    return await post.document().setData(
-        {"caption": caption, "date": date, 'postImage': url, 'user_uid': uid});
+    return await post.document().setData({
+      "caption": caption,
+      "date": date,
+      'postImage': url,
+      'user_uid': uid,
+      'name': name,
+      "profileImage": profileImage,
+    });
   }
 
   List<Post> _postData(QuerySnapshot snapshot) {
@@ -46,9 +56,5 @@ class DbService {
           date: doc['date'],
           postImage: doc['postImage']);
     }).toList();
-  }
-
-  Stream<List<Post>> getPosts() {
-    return post.snapshots().map(_postData);
   }
 }
