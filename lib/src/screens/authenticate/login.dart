@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:petStore/services/authService.dart';
 import 'package:petStore/src/widgets/loading.dart';
-import '../../../models/loginModel.dart';
+import 'package:petStore/models/loginModel.dart';
 
 class Login extends StatefulWidget {
   @override

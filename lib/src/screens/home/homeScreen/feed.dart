@@ -13,34 +13,38 @@ class _FeedState extends State<Feed> {
   Widget build(BuildContext context) {
     QuerySnapshot posts = Provider.of<QuerySnapshot>(context);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "The Social Hub",
-          style: TextStyle(
-              color: Colors.purple, fontSize: 23, fontWeight: FontWeight.w600),
-        ),
-        elevation: 5,
-        backgroundColor: Colors.white,
-        toolbarHeight: 60,
-        actions: [
-          IconButton(
-            color: Colors.purple,
-            icon: Icon(Icons.send),
-            onPressed: () {},
-            tooltip: "Message",
-            splashColor: Colors.purple[100],
-          ),
-        ],
-      ),
-      body: ListView.builder(
-        itemCount: posts.documents.length,
-        itemBuilder: (BuildContext context, int index) {
-          return Post(
-            post: posts.documents[index],
+    return posts == null
+        ? Text('')
+        : Scaffold(
+            appBar: AppBar(
+              title: Text(
+                "The Social Hub",
+                style: TextStyle(
+                    color: Colors.purple,
+                    fontSize: 23,
+                    fontWeight: FontWeight.w600),
+              ),
+              elevation: 5,
+              backgroundColor: Colors.white,
+              toolbarHeight: 60,
+              actions: [
+                IconButton(
+                  color: Colors.purple,
+                  icon: Icon(Icons.send),
+                  onPressed: () {},
+                  tooltip: "Message",
+                  splashColor: Colors.purple[100],
+                ),
+              ],
+            ),
+            body: ListView.builder(
+              itemCount: posts.documents.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Post(
+                  post: posts.documents[index],
+                );
+              },
+            ),
           );
-        },
-      ),
-    );
   }
 }

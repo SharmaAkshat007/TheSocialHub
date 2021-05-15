@@ -12,42 +12,45 @@ class _TopBannerState extends State<TopBanner> {
   Widget build(BuildContext context) {
     UserModel userInfo = Provider.of<UserModel>(context);
 
-    return Column(
-      children: [
-        Container(
-          margin: EdgeInsets.only(top: 50, right: 30, left: 30, bottom: 50),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return userInfo == null
+        ? Text('')
+        : Column(
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Hello,',
-                    style:
-                        TextStyle(fontSize: 24, fontWeight: FontWeight.normal),
-                  ),
-                  SizedBox(height: 8),
-                  Text(
-                    userInfo.name,
-                    style: TextStyle(
-                        fontSize: 33,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.purple),
-                  ),
-                ],
-              ),
-              CircleAvatar(
-                radius: 40,
-                backgroundImage: userInfo.profileImage != ''
-                    ? NetworkImage(userInfo.profileImage)
-                    : AssetImage('assets/images/whitescreen.jpg'),
-                backgroundColor: Colors.transparent,
+              Container(
+                margin:
+                    EdgeInsets.only(top: 50, right: 30, left: 30, bottom: 50),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Hello,',
+                          style: TextStyle(
+                              fontSize: 24, fontWeight: FontWeight.normal),
+                        ),
+                        SizedBox(height: 8),
+                        Text(
+                          userInfo.name,
+                          style: TextStyle(
+                              fontSize: 33,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.purple),
+                        ),
+                      ],
+                    ),
+                    CircleAvatar(
+                      radius: 40,
+                      backgroundImage: userInfo.profileImage != ''
+                          ? NetworkImage(userInfo.profileImage)
+                          : AssetImage('assets/images/whitescreen.jpg'),
+                      backgroundColor: Colors.transparent,
+                    ),
+                  ],
+                ),
               ),
             ],
-          ),
-        ),
-      ],
-    );
+          );
   }
 }
