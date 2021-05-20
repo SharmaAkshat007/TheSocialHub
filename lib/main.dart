@@ -1,5 +1,3 @@
-//import 'dart:js';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:petStore/services/authService.dart';
@@ -19,7 +17,7 @@ class MyApp extends StatelessWidget {
     return StreamProvider<FirebaseUser>.value(
       value: Auth().user,
       child: MaterialApp(
-        title: 'Pet Store',
+        title: 'The Social Hub',
         initialRoute: '/',
         onGenerateRoute: (settings) {
           switch (settings.name) {
