@@ -1,4 +1,4 @@
 # TheSocialHub
 
 Social Media App like Instagram using Firebase and Flutter
-![Login Screen](https://raw.githubusercontent.com/SharmaAkshat007/TheSocialHub/master/Screenshots/Login.jpg = 250\*250)
+<img src="https://raw.githubusercontent.com/SharmaAkshat007/TheSocialHub/master/Screenshots/Login.jpg" width="200" height="400" />
